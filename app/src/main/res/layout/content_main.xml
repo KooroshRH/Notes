@@ -8,5 +8,14 @@
     tools:context=".MainActivity"
     android:background="@color/backgroundColor"
     tools:showIn="@layout/activity_main">
+    <LinearLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:orientation = "vertical">
+        <ListView
+            android:id = "@+id/mainList"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
