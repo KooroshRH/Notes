@@ -2,6 +2,6 @@
 <resources>
     <color name="toolbarColor">#FFFFFF</color>
     <color name="colorPrimaryDark">#4D5DF2</color>
-    <color name="backgroundColor">#ECF9FA</color>
+    <color name="backgroundColor">#f9fafd</color>
     <color name="fontColor">#20222A</color>
 </resources>
