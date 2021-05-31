@@ -41,6 +41,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorPrimaryDark"
         app:maxImageSize="14dp"
+        app:elevation="8dp"
         app:srcCompat="@drawable/floatingButtonIcon" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
