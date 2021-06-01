@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#4D5DF2</color>
     <color name="backgroundColor">#f9fafd</color>
     <color name="fontColor">#20222A</color>
+    <color name="primaryFontColor">#9DA0AF</color>
+    <color name="optionsButtonColor">#9DA0AF</color>
+    <color name="folderCardIconColor">#FFBB38</color>
+    <color name="noteCardIconColor">#38B7FF</color>
 </resources>
