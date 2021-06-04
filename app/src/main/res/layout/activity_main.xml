@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/defaultMenuTitle"
                 android:textSize="18sp"
-                android:fontFamily="@font/IRANSans"
+                android:fontFamily="@font/iran_sans"
                 android:textColor="@color/fontColor"
                 android:layout_marginEnd="16dp"
                 />
@@ -42,6 +42,6 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:maxImageSize="14dp"
         app:elevation="8dp"
-        app:srcCompat="@drawable/floatingButtonIcon" />
+        app:srcCompat="@drawable/floating_button_icon" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

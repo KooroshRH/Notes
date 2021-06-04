@@ -8,9 +8,9 @@ import io.objectbox.relation.ToOne
 data class Note (
     @Id
     var id: Long = 0,
-    private var title: String? = null,
-    private var text: String? = null,
-    private var lastTimeModified: Int = 0
+    var title: String? = null,
+    var text: String? = null,
+    var lastTimeModified: Int = 0
 ) {
     lateinit var folder: ToOne<Folder>
 }
