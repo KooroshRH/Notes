@@ -5,7 +5,7 @@ import com.example.notes.model.MyObjectBox
 import io.objectbox.BoxStore
 
 object ObjectBox {
-    private lateinit var store: BoxStore
+    lateinit var store: BoxStore
 
     fun init(context: Context) {
         store = MyObjectBox.builder()
