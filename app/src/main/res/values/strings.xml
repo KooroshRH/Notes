@@ -2,4 +2,6 @@
     <string name="app_name">Notes</string>
     <string name="action_settings">Settings</string>
     <string name="defaultMenuTitle">یادداشت‌ها</string>
+    <string name="title_edit_hint">عنوان یادداشت</string>
+    <string name="title_activity_text_editor">Text Editor</string>
 </resources>

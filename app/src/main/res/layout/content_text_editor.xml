@@ -8,6 +8,48 @@
     tools:context=".TextEditorActivity"
     android:background="@color/backgroundColor"
     tools:showIn="@layout/activity_text_editor">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iran_sans"
+            android:textSize="12sp"
+            android:textColor="@color/primaryFontColor"
+            android:text="تاریخ امروز" />
+        <EditText
+            android:id="@+id/titleTextEditor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textDirection="rtl"
+            android:hint="@string/title_edit_hint"
+            android:singleLine="true"
+            android:fontFamily="@font/iran_sans"
+            android:textColor="@color/fontColor"
+            android:includeFontPadding="false"
+            android:textSize="18sp"
+            android:layout_marginHorizontal="25dp"
+            android:background="@null"
+            android:nextFocusDown="@id/descriptionTextEditor"/>
+        <EditText
+            android:id="@+id/descriptionTextEditor"
+            android:nextFocusUp="@id/titleTextEditor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="25dp"
+            android:fontFamily="@font/iran_sans"
+            android:textColor="@color/fontColor"
+            android:textSize="14sp"
+            android:includeFontPadding="false"
+            android:textDirection="rtl"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
