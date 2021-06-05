@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
+        android:id="@+id/listCard"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         app:cardCornerRadius="10dp"

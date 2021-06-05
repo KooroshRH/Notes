@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.example.notes.model.Card
+import com.example.notes.model.Note
+import com.example.notes.utils.ObjectBox
 
-class CardListAdapter(context: Context, resource: Int) : ArrayAdapter<Card>(context, resource) {
+class CardListAdapter(context: Context, resource: Int, callback: (note: Note) -> Unit) : ArrayAdapter<Card>(context, resource) {
     private var cardList: ArrayList<Card> = ArrayList()
+    private var openTextEditorCallback = callback
 
     class CardViewHolder(
         var titleText: TextView,
@@ -59,6 +63,7 @@ class CardListAdapter(context: Context, resource: Int) : ArrayAdapter<Card>(cont
             folderInnerIcon.visibility = View.INVISIBLE
             noteInnerIcon.visibility = View.VISIBLE
             noteOuterIcon.visibility = View.VISIBLE
+            row.findViewById<CardView>(R.id.listCard).setOnClickListener { openTextEditorCallback(ObjectBox.store.boxFor(Note::class.java).get(card.id)) }
         }
         else
         {

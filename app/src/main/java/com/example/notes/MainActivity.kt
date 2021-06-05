@@ -47,14 +47,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadMainMenu()
     {
-        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card)
+        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
         {
-            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE))
+            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE, note.id))
         }
         for (folder in ObjectBox.store.boxFor(Folder::class.java).all)
         {
-            cardListAdapter.add(Card("حاوی " + folder.notes.size + " یادداشت", folder.title, Card.CardType.FOLDER))
+            cardListAdapter.add(Card("حاوی " + folder.notes.size + " یادداشت", folder.title, Card.CardType.FOLDER, folder.id))
         }
         findViewById<ListView>(R.id.mainList).adapter = cardListAdapter
     }
