@@ -10,6 +10,7 @@ import com.example.notes.model.Note
 import com.example.notes.utils.NoteHolder
 import com.example.notes.utils.ObjectBox
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class TextEditorActivity : AppCompatActivity() {
     lateinit var backButton: ImageButton
@@ -35,6 +36,8 @@ class TextEditorActivity : AppCompatActivity() {
         backButton.setOnClickListener { onBackPressed() }
         titleTextEditor.setText(note.title?.trim(), TextView.BufferType.EDITABLE)
         descriptionTextEditor.setText(note.text?.trim(), TextView.BufferType.EDITABLE)
+        val now = Calendar.getInstance()
+        dateText.text = now.get(Calendar.DAY_OF_MONTH).toString() + "-" + now.get(Calendar.MONTH) + "-" + now.get(Calendar.YEAR)
     }
 
     override fun onBackPressed() {

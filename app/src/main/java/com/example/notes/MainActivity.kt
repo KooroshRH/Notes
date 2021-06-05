@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
         {
-            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60 + " دقیقه پیش", note.title, Card.CardType.NOTE))
+            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE))
         }
         for (folder in ObjectBox.store.boxFor(Folder::class.java).all)
         {
