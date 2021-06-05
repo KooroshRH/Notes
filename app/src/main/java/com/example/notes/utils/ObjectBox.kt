@@ -6,10 +6,15 @@ import io.objectbox.BoxStore
 
 object ObjectBox {
     lateinit var store: BoxStore
+    var isInitialized: Boolean = false
 
     fun init(context: Context) {
-        store = MyObjectBox.builder()
-            .androidContext(context.applicationContext)
-            .build()
+        if (!isInitialized)
+        {
+            store = MyObjectBox.builder()
+                .androidContext(context.applicationContext)
+                .build()
+            isInitialized = true
+        }
     }
 }

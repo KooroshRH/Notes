@@ -10,7 +10,7 @@ data class Note (
     var id: Long = 0,
     var title: String? = null,
     var text: String? = null,
-    var lastTimeModified: Int = 0
+    var lastTimeModified: Long = 0
 ) {
     lateinit var folder: ToOne<Folder>
 }

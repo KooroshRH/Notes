@@ -8,6 +8,7 @@ import android.widget.ListView
 import com.example.notes.model.Card
 import com.example.notes.model.Folder
 import com.example.notes.model.Note
+import com.example.notes.utils.NoteHolder
 import com.example.notes.utils.ObjectBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -30,11 +31,18 @@ class MainActivity : AppCompatActivity() {
         setupView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadMainMenu()
+        closeOptionsCallback()
+    }
+
     private fun setupView()
     {
         loadMainMenu()
+        closeOptionsCallback()
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
-        newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "سلام", "adsf", 0))}
+        newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "", "", Calendar.getInstance().time.time))}
     }
 
     private fun loadMainMenu()
@@ -67,6 +75,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun openTextEditor(note: Note)
     {
-        startActivity(Intent(this, TextEditorActivity::class.java))
+        var intent = Intent(this, TextEditorActivity::class.java)
+        NoteHolder.note = note
+        startActivity(intent)
     }
 }
