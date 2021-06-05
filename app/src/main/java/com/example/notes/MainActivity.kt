@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var openedFolder: Folder
     private var isFolderOpened: Boolean = false
+    private var isOptionMenuOpened: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,10 @@ class MainActivity : AppCompatActivity() {
             val note = Note(0, "", "", Calendar.getInstance().time.time)
             if (isFolderOpened) note.folder.setAndPutTarget(openedFolder)
             openTextEditor(note)
+        }
+        optionsButton.setOnTouchListener { _, p1 ->
+            if (!isOptionMenuOpened) openFolderOptionsMenu(p1.x, p1.y)
+            true
         }
         newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
         backButton.setOnClickListener { onBackPressed() }
@@ -126,6 +131,62 @@ class MainActivity : AppCompatActivity() {
         backButton.visibility = View.INVISIBLE
         optionsButton.visibility = View.INVISIBLE
         loadMainMenu()
+    }
+
+    private fun openFolderOptionsMenu(x: Float, y: Float)
+    {
+        isOptionMenuOpened = true
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.option_popup, null)
+        val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.showAtLocation(backButton.rootView, Gravity.NO_GRAVITY, x.toInt() + 30, y.toInt() + 80)
+        popupWindow.contentView.findViewById<FrameLayout>(R.id.renameButton).setOnClickListener {
+            fakeBkg.visibility = View.VISIBLE
+            openRenameFolderPopup()
+            popupWindow.dismiss()
+        }
+        popupWindow.contentView.findViewById<FrameLayout>(R.id.deleteButton).setOnClickListener {
+            deleteFolder(openedFolder)
+            popupWindow.dismiss()
+        }
+        popupWindow.setOnDismissListener { isOptionMenuOpened = false }
+    }
+
+    private fun openRenameFolderPopup()
+    {
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.general_popup, null)
+        val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.showAtLocation(popupWindow.contentView, Gravity.CENTER, 0, 0)
+        newFolderFloatingActionButton.visibility = View.INVISIBLE
+        newNoteFloatingActionButton.visibility = View.INVISIBLE
+        mainFloatingActionButton.visibility = View.INVISIBLE
+        popupWindow.contentView.findViewById<TextView>(R.id.popupDescription).visibility = View.GONE
+        popupWindow.contentView.findViewById<TextView>(R.id.popupTitle).text = "تغییر عنوان پوشه"
+        val mainButton = popupWindow.contentView.findViewById<Button>(R.id.popupMainButton)
+        val popupEditText = popupWindow.contentView.findViewById<EditText>(R.id.popupInput)
+        popupWindow.contentView.findViewById<TextView>(R.id.cancelButton).setOnClickListener { popupWindow.dismiss() }
+        popupEditText.setText(openedFolder.title)
+        mainButton.text = "ذخیره"
+        mainButton.setOnClickListener {
+            if (popupEditText.text.trim().isNotEmpty())
+            {
+                openedFolder.title = popupEditText.text.toString()
+                ObjectBox.store.boxFor(Folder::class.java).put(openedFolder)
+                popupWindow.dismiss()
+                openFolder(openedFolder)
+            }
+        }
+        popupWindow.setOnDismissListener {
+            closeOptionsCallback()
+            mainFloatingActionButton.visibility = View.VISIBLE
+        }
+    }
+
+    private fun deleteFolder(folder: Folder)
+    {
+        ObjectBox.store.boxFor(Folder::class.java).remove(folder)
+        onBackPressed()
     }
 
     private fun openNewFolderPopup()
