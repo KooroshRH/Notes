@@ -4,4 +4,6 @@
     <string name="defaultMenuTitle">یادداشت‌ها</string>
     <string name="title_edit_hint">عنوان یادداشت</string>
     <string name="title_activity_text_editor">Text Editor</string>
+    <string name="popup_edit_hint">عنوان پوشه</string>
+    <string name="popup_cancel_text">انصراف</string>
 </resources>
