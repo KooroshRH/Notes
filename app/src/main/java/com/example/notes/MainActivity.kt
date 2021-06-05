@@ -14,20 +14,27 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mainFloatingActionButton: FloatingActionButton
+    private lateinit var mainFloatingActionButton: FloatingActionButton
+    private lateinit var newFolderFloatingActionButton: FloatingActionButton
+    private lateinit var newNoteFloatingActionButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ObjectBox.init(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        mainFloatingActionButton = findViewById<FloatingActionButton>(R.id.fab)
-        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
-            openOptionsCallback()
-        })
+        mainFloatingActionButton = findViewById(R.id.fab)
+        newFolderFloatingActionButton = findViewById(R.id.fabNewFolder)
+        newNoteFloatingActionButton = findViewById(R.id.fabNewNote)
     }
 
-    fun loadMainMenu()
+    private fun setupView()
+    {
+        loadMainMenu()
+        mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
+    }
+
+    private fun loadMainMenu()
     {
         val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
@@ -43,19 +50,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun openOptionsCallback()
     {
-        findViewById<FloatingActionButton>(R.id.fabNewFolder).visibility = View.VISIBLE
-        findViewById<FloatingActionButton>(R.id.fabNewNote).visibility = View.VISIBLE
-        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
-            closeOptionsCallback()
-        })
+        newFolderFloatingActionButton.visibility = View.VISIBLE
+        newNoteFloatingActionButton.visibility = View.VISIBLE
+        mainFloatingActionButton.setOnClickListener { closeOptionsCallback() }
     }
 
     private fun closeOptionsCallback()
     {
-        findViewById<FloatingActionButton>(R.id.fabNewFolder).visibility = View.INVISIBLE
-        findViewById<FloatingActionButton>(R.id.fabNewNote).visibility = View.INVISIBLE
-        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
-            openOptionsCallback()
-        })
+        newFolderFloatingActionButton.visibility = View.INVISIBLE
+        newNoteFloatingActionButton.visibility = View.INVISIBLE
+        mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
     }
 }
