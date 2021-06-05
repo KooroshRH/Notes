@@ -17,6 +17,7 @@ import com.example.notes.utils.ObjectBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         popupWindow.contentView.findViewById<TextView>(R.id.popupDescription).text = "برای پوشه جدید عنوان بنویسید."
         val mainButton = popupWindow.contentView.findViewById<Button>(R.id.popupMainButton)
         val popupEditText = popupWindow.contentView.findViewById<EditText>(R.id.popupInput)
+        popupWindow.contentView.findViewById<TextView>(R.id.cancelButton).setOnClickListener { popupWindow.dismiss() }
         mainButton.text = "ایجاد پوشه"
         mainButton.setOnClickListener {
             if (popupEditText.text.trim().isNotEmpty())
