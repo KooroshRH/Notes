@@ -16,7 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/toolbarColor">
+            android:background="@color/toolbarColor"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
             <ImageButton
                 android:id="@+id/textEditorBackButton"
                 android:layout_width="18dp"
@@ -29,12 +30,9 @@
                 android:id="@+id/textEditorOptionButton"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:scaleType="fitXY"
                 android:layout_gravity="start|center"
                 android:background="@drawable/options_button_icon"
-                android:clickable="true"
-                android:backgroundTint="@color/optionsButtonColor"
-                android:focusable="true" />
+                android:backgroundTint="@color/optionsButtonColor" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -18,17 +18,36 @@
             android:layout_height="56dp"
             android:background="@color/toolbarColor"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
-
+            <ImageButton
+                android:visibility="gone"
+                android:id="@+id/mainBackButton"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/back_icon"
+                android:backgroundTint="@color/optionsButtonColor"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="19dp"
+                />
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/toolbarText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/defaultMenuTitle"
                 android:textSize="18sp"
+                android:layout_gravity="end|center"
                 android:includeFontPadding="false"
                 android:fontFamily="@font/iran_sans"
                 android:textColor="@color/fontColor"
                 android:layout_marginEnd="16dp"
                 />
+            <ImageButton
+                android:visibility="gone"
+                android:id="@+id/mainActivityOptionButton"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="start|center"
+                android:background="@drawable/options_button_icon"
+                android:backgroundTint="@color/optionsButtonColor"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

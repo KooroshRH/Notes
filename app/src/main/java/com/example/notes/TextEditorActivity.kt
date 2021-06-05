@@ -1,7 +1,6 @@
 package com.example.notes
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -22,7 +21,6 @@ class TextEditorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_text_editor)
-        setSupportActionBar(toolbar)
         backButton = findViewById(R.id.textEditorBackButton)
         titleTextEditor = findViewById(R.id.titleTextEditor)
         descriptionTextEditor = findViewById(R.id.descriptionTextEditor)

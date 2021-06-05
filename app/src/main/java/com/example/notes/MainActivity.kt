@@ -24,17 +24,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainFloatingActionButton: FloatingActionButton
     private lateinit var newFolderFloatingActionButton: FloatingActionButton
     private lateinit var newNoteFloatingActionButton: FloatingActionButton
+    private lateinit var optionsButton: ImageButton
+    private lateinit var backButton: ImageButton
     private lateinit var fakeBkg: ImageView
+    private lateinit var toolbarTitle: TextView
+
+    private lateinit var openedFolder: Folder
+    private var isFolderOpened: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ObjectBox.init(this)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
         mainFloatingActionButton = findViewById(R.id.fab)
         newFolderFloatingActionButton = findViewById(R.id.fabNewFolder)
         newNoteFloatingActionButton = findViewById(R.id.fabNewNote)
+        optionsButton = findViewById(R.id.mainActivityOptionButton)
+        backButton = findViewById(R.id.mainBackButton)
         fakeBkg = findViewById(R.id.fakeBkg)
+        toolbarTitle = findViewById(R.id.toolbarText)
         setupView()
     }
 
@@ -51,11 +59,12 @@ class MainActivity : AppCompatActivity() {
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
         newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "", "", Calendar.getInstance().time.time))}
         newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
+        backButton.setOnClickListener { onBackPressed() }
     }
 
     private fun loadMainMenu()
     {
-        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor)
+        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor, ::openFolder)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
         {
             cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE, note.id))
@@ -88,6 +97,29 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, TextEditorActivity::class.java)
         NoteHolder.note = note
         startActivity(intent)
+    }
+
+    private fun openFolder(folder: Folder)
+    {
+        openedFolder = folder
+        isFolderOpened = true
+        toolbarTitle.text = folder.title
+        backButton.visibility = View.VISIBLE
+        optionsButton.visibility = View.VISIBLE
+        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor, ::openFolder)
+        for (note in folder.notes)
+        {
+            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE, note.id))
+        }
+        findViewById<ListView>(R.id.mainList).adapter = cardListAdapter
+    }
+
+    override fun onBackPressed() {
+        toolbarTitle.text = "یادداشت‌ها"
+        isFolderOpened = false
+        backButton.visibility = View.INVISIBLE
+        optionsButton.visibility = View.INVISIBLE
+        loadMainMenu()
     }
 
     private fun openNewFolderPopup()
