@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadMainMenu()
+        if (!isFolderOpened) loadMainMenu()
         closeOptionsCallback()
     }
 
@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (!isFolderOpened) super.onBackPressed()
         toolbarTitle.text = "یادداشت‌ها"
         isFolderOpened = false
         backButton.visibility = View.INVISIBLE
