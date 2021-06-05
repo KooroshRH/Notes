@@ -2,35 +2,60 @@ package com.example.notes
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
+import android.view.View
+import android.widget.ListView
+import com.example.notes.model.Card
+import com.example.notes.model.Folder
+import com.example.notes.model.Note
 import com.example.notes.utils.ObjectBox
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var mainFloatingActionButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ObjectBox.init(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        mainFloatingActionButton = findViewById<FloatingActionButton>(R.id.fab)
+        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
+            openOptionsCallback()
+        })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    fun loadMainMenu()
+    {
+        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card)
+        for (note in ObjectBox.store.boxFor(Note::class.java).all)
+        {
+            cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60 + " دقیقه پیش", note.title, Card.CardType.NOTE))
         }
+        for (folder in ObjectBox.store.boxFor(Folder::class.java).all)
+        {
+            cardListAdapter.add(Card("حاوی " + folder.notes.size + " یادداشت", folder.title, Card.CardType.FOLDER))
+        }
+        findViewById<ListView>(R.id.mainList).adapter = cardListAdapter
+    }
+
+    private fun openOptionsCallback()
+    {
+        findViewById<FloatingActionButton>(R.id.fabNewFolder).visibility = View.VISIBLE
+        findViewById<FloatingActionButton>(R.id.fabNewNote).visibility = View.VISIBLE
+        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
+            closeOptionsCallback()
+        })
+    }
+
+    private fun closeOptionsCallback()
+    {
+        findViewById<FloatingActionButton>(R.id.fabNewFolder).visibility = View.INVISIBLE
+        findViewById<FloatingActionButton>(R.id.fabNewNote).visibility = View.INVISIBLE
+        mainFloatingActionButton.setOnClickListener(View.OnClickListener {
+            openOptionsCallback()
+        })
     }
 }

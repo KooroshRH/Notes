@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/defaultMenuTitle"
                 android:textSize="18sp"
+                android:includeFontPadding="false"
                 android:fontFamily="@font/iran_sans"
                 android:textColor="@color/fontColor"
                 android:layout_marginEnd="16dp"
@@ -31,17 +32,50 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_main"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="end|bottom" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorPrimaryDark"
         app:maxImageSize="14dp"
         app:elevation="8dp"
         app:srcCompat="@drawable/floating_button_icon" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNewFolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/fab"
+        android:layout_gravity="top|center"
+        app:backgroundTint="@color/toolbarColor"
+        app:srcCompat="@drawable/folder_icon"
+        app:maxImageSize="17dp"
+        app:fabCustomSize="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginVertical="85dp"
+        android:tint="@color/optionsButtonColor"
+        android:visibility="invisible"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNewNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/fabNewFolder"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="140dp"
+        app:maxImageSize="17dp"
+        app:fabCustomSize="48dp"
+        app:backgroundTint="@color/toolbarColor"
+        app:srcCompat="@drawable/note_icon"
+        android:tint="@color/optionsButtonColor"
+        android:visibility="invisible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
