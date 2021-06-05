@@ -6,4 +6,7 @@
     <string name="title_activity_text_editor">Text Editor</string>
     <string name="popup_edit_hint">عنوان پوشه</string>
     <string name="popup_cancel_text">انصراف</string>
+    <string name="deleteNote">حذف کردن</string>
+    <string name="deleteText">حذف کردن</string>
+    <string name="changeNameText">تغییر عنوان</string>
 </resources>
