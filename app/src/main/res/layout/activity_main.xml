@@ -38,7 +38,6 @@
         layout="@layout/content_main"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="end|bottom" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="56dp"
@@ -79,4 +78,11 @@
         android:tint="@color/optionsButtonColor"
         android:visibility="invisible"/>
 
+    <ImageView
+        android:id="@+id/fakeBkg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fakeBkgColor"
+        android:alpha="0.7"
+        android:visibility="gone"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,10 +1,14 @@
 package com.example.notes
 
+import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import android.widget.ListView
+import android.widget.*
 import com.example.notes.model.Card
 import com.example.notes.model.Folder
 import com.example.notes.model.Note
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainFloatingActionButton: FloatingActionButton
     private lateinit var newFolderFloatingActionButton: FloatingActionButton
     private lateinit var newNoteFloatingActionButton: FloatingActionButton
+    private lateinit var fakeBkg: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         mainFloatingActionButton = findViewById(R.id.fab)
         newFolderFloatingActionButton = findViewById(R.id.fabNewFolder)
         newNoteFloatingActionButton = findViewById(R.id.fabNewNote)
+        fakeBkg = findViewById(R.id.fakeBkg)
         setupView()
     }
 
@@ -43,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         closeOptionsCallback()
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
         newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "", "", Calendar.getInstance().time.time))}
+        newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
     }
 
     private fun loadMainMenu()
@@ -63,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     {
         newFolderFloatingActionButton.visibility = View.VISIBLE
         newNoteFloatingActionButton.visibility = View.VISIBLE
+        fakeBkg.visibility = View.VISIBLE
         mainFloatingActionButton.setOnClickListener { closeOptionsCallback() }
     }
 
@@ -70,13 +78,43 @@ class MainActivity : AppCompatActivity() {
     {
         newFolderFloatingActionButton.visibility = View.INVISIBLE
         newNoteFloatingActionButton.visibility = View.INVISIBLE
+        fakeBkg.visibility = View.INVISIBLE
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
     }
 
     private fun openTextEditor(note: Note)
     {
-        var intent = Intent(this, TextEditorActivity::class.java)
+        val intent = Intent(this, TextEditorActivity::class.java)
         NoteHolder.note = note
         startActivity(intent)
+    }
+
+    private fun openNewFolderPopup()
+    {
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.general_popup, null)
+        val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.showAtLocation(popupWindow.contentView, Gravity.CENTER, 0, 0)
+        newFolderFloatingActionButton.visibility = View.INVISIBLE
+        newNoteFloatingActionButton.visibility = View.INVISIBLE
+        mainFloatingActionButton.visibility = View.INVISIBLE
+        popupWindow.contentView.findViewById<TextView>(R.id.popupTitle).text = "پوشه جدید"
+        popupWindow.contentView.findViewById<TextView>(R.id.popupDescription).text = "برای پوشه جدید عنوان بنویسید."
+        val mainButton = popupWindow.contentView.findViewById<Button>(R.id.popupMainButton)
+        val popupEditText = popupWindow.contentView.findViewById<EditText>(R.id.popupInput)
+        mainButton.text = "ایجاد پوشه"
+        mainButton.setOnClickListener {
+            if (popupEditText.text.trim().isNotEmpty())
+            {
+                val folder = Folder(0, popupEditText.text.trim().toString())
+                ObjectBox.store.boxFor(Folder::class.java).put(folder)
+                popupWindow.dismiss()
+                loadMainMenu()
+            }
+        }
+        popupWindow.setOnDismissListener {
+            closeOptionsCallback()
+            mainFloatingActionButton.visibility = View.VISIBLE
+        }
     }
 }

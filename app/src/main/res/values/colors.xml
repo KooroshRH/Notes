@@ -9,4 +9,5 @@
     <color name="folderCardIconColor">#FFBB38</color>
     <color name="noteCardIconColor">#38B7FF</color>
     <color name="popup_button_color">#4D5DF2</color>
+    <color name="fakeBkgColor">#8F20222A</color>
 </resources>
