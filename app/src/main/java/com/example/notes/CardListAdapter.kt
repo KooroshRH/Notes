@@ -46,29 +46,27 @@ class CardListAdapter(context: Context, resource: Int) : ArrayAdapter<Card>(cont
         {
             viewHolder = row.tag as CardViewHolder
         }
-        val card: Card? = getItem(position)
-        if (card != null) {
-            viewHolder.titleText.text = card.title
-            viewHolder.descriptionText.text = card.description
-            val folderOuterIcon: ImageView? = row?.findViewById(R.id.cardFolderModeIconOuter)
-            val folderInnerIcon: ImageView? = row?.findViewById(R.id.cardFolderModeIconInner)
-            val noteOuterIcon: ImageView? = row?.findViewById(R.id.cardNoteModeIconOuter)
-            val noteInnerIcon: ImageView? = row?.findViewById(R.id.cardNoteModeIconInner)
-            if (card.type == Card.CardType.NOTE)
-            {
-                folderOuterIcon?.visibility ?: View.INVISIBLE
-                folderInnerIcon?.visibility ?: View.INVISIBLE
-                noteInnerIcon?.visibility ?: View.VISIBLE
-                noteOuterIcon?.visibility ?: View.VISIBLE
-            }
-            else
-            {
-                folderOuterIcon?.visibility ?: View.VISIBLE
-                folderOuterIcon?.visibility ?: View.VISIBLE
-                noteInnerIcon?.visibility ?: View.INVISIBLE
-                noteOuterIcon?.visibility ?: View.INVISIBLE
-            }
+        val card: Card = getItem(position)
+        viewHolder.titleText.text = card.title
+        viewHolder.descriptionText.text = card.description
+        val folderOuterIcon: ImageView = row!!.findViewById(R.id.cardFolderModeIconOuter)
+        val folderInnerIcon: ImageView = row.findViewById(R.id.cardFolderModeIconInner)
+        val noteOuterIcon: ImageView = row.findViewById(R.id.cardNoteModeIconOuter)
+        val noteInnerIcon: ImageView = row.findViewById(R.id.cardNoteModeIconInner)
+        if (card.type == Card.CardType.NOTE)
+        {
+            folderOuterIcon.visibility = View.INVISIBLE
+            folderInnerIcon.visibility = View.INVISIBLE
+            noteInnerIcon.visibility = View.VISIBLE
+            noteOuterIcon.visibility = View.VISIBLE
         }
-        return row!!
+        else
+        {
+            folderOuterIcon.visibility = View.VISIBLE
+            folderInnerIcon.visibility = View.VISIBLE
+            noteInnerIcon.visibility = View.INVISIBLE
+            noteOuterIcon.visibility = View.INVISIBLE
+        }
+        return row
     }
 }

@@ -8,21 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         app:cardCornerRadius="10dp"
+        android:clickable="true"
         android:background="@color/backgroundColor"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:elevation="8dp"
-        app:cardElevation="10dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="4dp"
+        app:cardElevation="4dp"
+        android:focusable="true">
         <ImageButton
             android:id="@+id/cardOptionsButton"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:scaleType="fitXY"
             android:layout_marginStart="18dp"
-            android:background="@color/toolbarColor"
-            android:src="@drawable/options_button_icon"
+            android:background="@drawable/options_button_icon"
             android:layout_gravity="start|center"
-            app:tint="@color/optionsButtonColor" />
+            android:clickable="true"
+            android:backgroundTint="@color/optionsButtonColor"
+            android:focusable="true" />
         <ImageView
             android:id="@+id/cardFolderModeIconOuter"
             android:layout_width="40dp"
@@ -38,11 +40,11 @@
             android:layout_width="18dp"
             android:layout_height="16dp"
             android:layout_gravity="end|center"
-            android:src="@drawable/folder_icon"
+            android:background="@drawable/folder_icon"
             android:layout_marginEnd="27dp"
             android:scaleType="fitXY"
             android:visibility="invisible"
-            app:tint="@color/folderCardIconColor" />
+            android:backgroundTint="@color/folderCardIconColor" />
         <ImageView
             android:id="@+id/cardNoteModeIconOuter"
             android:layout_width="40dp"
@@ -58,11 +60,11 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="end|center"
-            android:src="@drawable/note_icon"
+            android:background="@drawable/note_icon"
             android:scaleType="fitXY"
             android:layout_marginEnd="28dp"
             android:visibility="visible"
-            app:tint="@color/noteCardIconColor" />
+            android:backgroundTint="@color/noteCardIconColor"/>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="47dp"
