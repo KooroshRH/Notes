@@ -1,5 +1,6 @@
 package com.example.notes
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
@@ -26,12 +27,14 @@ class MainActivity : AppCompatActivity() {
         mainFloatingActionButton = findViewById(R.id.fab)
         newFolderFloatingActionButton = findViewById(R.id.fabNewFolder)
         newNoteFloatingActionButton = findViewById(R.id.fabNewNote)
+        setupView()
     }
 
     private fun setupView()
     {
         loadMainMenu()
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
+        newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "سلام", "adsf", 0))}
     }
 
     private fun loadMainMenu()
@@ -60,5 +63,10 @@ class MainActivity : AppCompatActivity() {
         newFolderFloatingActionButton.visibility = View.INVISIBLE
         newNoteFloatingActionButton.visibility = View.INVISIBLE
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
+    }
+
+    private fun openTextEditor(note: Note)
+    {
+        startActivity(Intent(this, TextEditorActivity::class.java))
     }
 }
