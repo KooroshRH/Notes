@@ -57,7 +57,11 @@ class MainActivity : AppCompatActivity() {
         loadMainMenu()
         closeOptionsCallback()
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
-        newNoteFloatingActionButton.setOnClickListener { openTextEditor(Note(0, "", "", Calendar.getInstance().time.time))}
+        newNoteFloatingActionButton.setOnClickListener {
+            val note = Note(0, "", "", Calendar.getInstance().time.time)
+            if (isFolderOpened) note.folder.setAndPutTarget(openedFolder)
+            openTextEditor(note)
+        }
         newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
         backButton.setOnClickListener { onBackPressed() }
     }
@@ -67,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor, ::openFolder)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
         {
+            if (!note.folder.isNull) continue
             cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE, note.id))
         }
         for (folder in ObjectBox.store.boxFor(Folder::class.java).all)
@@ -78,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openOptionsCallback()
     {
-        newFolderFloatingActionButton.visibility = View.VISIBLE
+        if (!isFolderOpened) newFolderFloatingActionButton.visibility = View.VISIBLE
         newNoteFloatingActionButton.visibility = View.VISIBLE
         fakeBkg.visibility = View.VISIBLE
         mainFloatingActionButton.setOnClickListener { closeOptionsCallback() }
