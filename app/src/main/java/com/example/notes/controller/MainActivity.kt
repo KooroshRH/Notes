@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             openTextEditor(note)
         }
         optionsButton.setOnTouchListener { _, p1 ->
-            if (!isOptionMenuOpened) openFolderOptionsMenu(p1.x, p1.y)
+            if (!isOptionMenuOpened) openFolderOptionsMenu(openedFolder, p1.x, p1.y)
             true
         }
         newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         loadMainMenu()
     }
 
-    private fun openFolderOptionsMenu(x: Float, y: Float)
+    private fun openFolderOptionsMenu(folder: Folder, x: Float, y: Float)
     {
         isOptionMenuOpened = true
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -141,15 +141,15 @@ class MainActivity : AppCompatActivity() {
         val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
         popupWindow.showAtLocation(backButton.rootView, Gravity.NO_GRAVITY, x.toInt() + 30, y.toInt() + 80)
         popupWindow.contentView.findViewById<FrameLayout>(R.id.renameButton).setOnClickListener {
+            popupWindow.dismiss()
             fakeBkg.visibility = View.VISIBLE
             openRenameFolderPopup()
-            popupWindow.dismiss()
         }
         popupWindow.contentView.findViewById<FrameLayout>(R.id.deleteButton).setOnClickListener {
             popupWindow.dismiss()
             fakeBkg.visibility = View.VISIBLE
             mainFloatingActionButton.visibility = View.INVISIBLE
-            openConfirmPopup(openedFolder, ::deleteFolder)
+            openConfirmPopup(folder, ::deleteFolder)
         }
         popupWindow.setOnDismissListener { isOptionMenuOpened = false }
     }
