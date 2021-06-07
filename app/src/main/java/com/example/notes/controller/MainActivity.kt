@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbarTitle: TextView
 
     private lateinit var openedFolder: Folder
-    private var isFolderOpened: Boolean = false
-    private var isOptionMenuOpened: Boolean = false
+    private var isFolderOpened: Boolean = false // we use this bool for modifying back button while a folder is opened
+    private var isOptionMenuOpened: Boolean = false // we use this bool for preventing duplicate option popup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,34 +45,46 @@ class MainActivity : AppCompatActivity() {
         setupView()
     }
 
+    /*
+        When we return to previous menu, we must update our lists and we do this here on onResume
+     */
     override fun onResume() {
         super.onResume()
         if (!isFolderOpened) loadMainMenu() else openFolder(openedFolder)
-        closeOptionsCallback()
+        closeFloatingButtons()
     }
 
+    /*
+        In this method we setup our buttons and texts
+     */
     private fun setupView()
     {
         loadMainMenu()
-        closeOptionsCallback()
-        mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
-        newNoteFloatingActionButton.setOnClickListener {
-            val note = Note(0, "", "", Calendar.getInstance().time.time)
-            if (isFolderOpened)
-            {
-                note.folder.setAndPutTarget(openedFolder)
-                openedFolder = ObjectBox.store.boxFor(Folder::class.java).get(openedFolder.id)
-            }
-            openTextEditor(note)
-        }
+        closeFloatingButtons()
+        mainFloatingActionButton.setOnClickListener { openFloatingButtons() }
+        newNoteFloatingActionButton.setOnClickListener { newNoteCallback() }
+        newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
+        backButton.setOnClickListener { onBackPressed() }
         optionsButton.setOnTouchListener { _, p1 ->
             if (!isOptionMenuOpened) openFolderOptionsMenu(openedFolder, p1.x, p1.y)
             true
         }
-        newFolderFloatingActionButton.setOnClickListener { openNewFolderPopup() }
-        backButton.setOnClickListener { onBackPressed() }
     }
 
+    private fun newNoteCallback()
+    {
+        val note = Note(0, "", "", Calendar.getInstance().time.time)
+        if (isFolderOpened)
+        {
+            note.folder.setAndPutTarget(openedFolder)
+            openedFolder = ObjectBox.store.boxFor(Folder::class.java).get(openedFolder.id)
+        }
+        openTextEditor(note)
+    }
+
+    /*
+        In this method we fetch all notes and folders from database and make a card for them and building the list
+     */
     private fun loadMainMenu()
     {
         val cardListAdapter = CardListAdapter(applicationContext,
@@ -89,29 +101,32 @@ class MainActivity : AppCompatActivity() {
         findViewById<ListView>(R.id.mainList).adapter = cardListAdapter
     }
 
-    private fun openOptionsCallback()
+    private fun openFloatingButtons()
     {
         if (!isFolderOpened) newFolderFloatingActionButton.visibility = View.VISIBLE
         newNoteFloatingActionButton.visibility = View.VISIBLE
         fakeBkg.visibility = View.VISIBLE
-        mainFloatingActionButton.setOnClickListener { closeOptionsCallback() }
+        mainFloatingActionButton.setOnClickListener { closeFloatingButtons() }
     }
 
-    private fun closeOptionsCallback()
+    private fun closeFloatingButtons()
     {
         newFolderFloatingActionButton.visibility = View.INVISIBLE
         newNoteFloatingActionButton.visibility = View.INVISIBLE
         fakeBkg.visibility = View.INVISIBLE
-        mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
+        mainFloatingActionButton.setOnClickListener { openFloatingButtons() }
     }
 
     private fun openTextEditor(note: Note)
     {
         val intent = Intent(this, TextEditorActivity::class.java)
-        NoteHolder.note = note
+        NoteHolder.note = note // cause we are using ObjectBox and Entity notation for note class, we can't serialize the note class and pass it using intent
         startActivity(intent)
     }
 
+    /*
+        This method open selected folder in menu and show its notes.
+     */
     private fun openFolder(folder: Folder)
     {
         openedFolder = folder
@@ -184,11 +199,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
         popupWindow.setOnDismissListener {
-            closeOptionsCallback()
+            closeFloatingButtons()
             mainFloatingActionButton.visibility = View.VISIBLE
         }
     }
 
+    /*
+        This method will confirm the user decision for deleting the selected folder.
+     */
     private fun openConfirmPopup(folder: Folder, mainCallback: (folder: Folder) -> Unit)
     {
         val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -211,6 +229,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
+        The most important point in this method is we must delete the notes that belongs to deleting folder
+     */
     private fun deleteFolder(folder: Folder)
     {
         for (note in folder.notes)
@@ -246,7 +267,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         popupWindow.setOnDismissListener {
-            closeOptionsCallback()
+            closeFloatingButtons()
             mainFloatingActionButton.visibility = View.VISIBLE
         }
     }

@@ -23,7 +23,8 @@ class TextEditorActivity : AppCompatActivity() {
     private lateinit var optionsButton: ImageButton
     private lateinit var fakeBkg: ImageView
     private lateinit var note: Note
-    private var isOptionMenuOpened = false
+
+    private var isOptionMenuOpened = false // we use this bool for preventing duplicate option popup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,9 @@ class TextEditorActivity : AppCompatActivity() {
         setupView()
     }
 
+    /*
+        In this method we setup our buttons and texts
+     */
     private fun setupView()
     {
         backButton.setOnClickListener { onBackPressed() }
