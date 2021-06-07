@@ -146,8 +146,10 @@ class MainActivity : AppCompatActivity() {
             popupWindow.dismiss()
         }
         popupWindow.contentView.findViewById<FrameLayout>(R.id.deleteButton).setOnClickListener {
-            deleteFolder(openedFolder)
             popupWindow.dismiss()
+            fakeBkg.visibility = View.VISIBLE
+            mainFloatingActionButton.visibility = View.INVISIBLE
+            openConfirmPopup(openedFolder, ::deleteFolder)
         }
         popupWindow.setOnDismissListener { isOptionMenuOpened = false }
     }
@@ -183,8 +185,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun openConfirmPopup(folder: Folder, mainCallback: (folder: Folder) -> Unit)
+    {
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.general_popup, null)
+        val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.showAtLocation(popupWindow.contentView, Gravity.CENTER, 0, 0)
+        popupWindow.contentView.findViewById<TextView>(R.id.popupDescription).text = "آیا از حذف این پوشه اطمینان دارید؟"
+        popupWindow.contentView.findViewById<TextView>(R.id.popupTitle).text = "حذف پوشه"
+        popupWindow.contentView.findViewById<TextView>(R.id.cancelButton).setOnClickListener { popupWindow.dismiss() }
+        popupWindow.contentView.findViewById<EditText>(R.id.popupInput).visibility = View.GONE
+        val mainButton = popupWindow.contentView.findViewById<Button>(R.id.popupMainButton)
+        mainButton.text = "حذف"
+        mainButton.setOnClickListener {
+            popupWindow.dismiss()
+            mainCallback(folder)
+        }
+        popupWindow.setOnDismissListener {
+            fakeBkg.visibility = View.INVISIBLE
+            mainFloatingActionButton.visibility = View.VISIBLE
+        }
+    }
+
     private fun deleteFolder(folder: Folder)
     {
+        for (note in folder.notes)
+        {
+            ObjectBox.store.boxFor(Note::class.java).remove(note)
+        }
         ObjectBox.store.boxFor(Folder::class.java).remove(folder)
         onBackPressed()
     }

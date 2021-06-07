@@ -19,6 +19,7 @@ class TextEditorActivity : AppCompatActivity() {
     private lateinit var descriptionTextEditor: EditText
     private lateinit var dateText: TextView
     private lateinit var optionsButton: ImageButton
+    private lateinit var fakeBkg: ImageView
     private lateinit var note: Note
     private var isOptionMenuOpened = false
 
@@ -30,6 +31,7 @@ class TextEditorActivity : AppCompatActivity() {
         descriptionTextEditor = findViewById(R.id.descriptionTextEditor)
         dateText = findViewById(R.id.dateText)
         optionsButton = findViewById(R.id.textEditorOptionButton)
+        fakeBkg = findViewById(R.id.fakeBkg)
         note = NoteHolder.note
         setupView()
     }
@@ -65,11 +67,33 @@ class TextEditorActivity : AppCompatActivity() {
         popupWindow.showAtLocation(backButton.rootView, Gravity.NO_GRAVITY, x.toInt() + 30, y.toInt() + 80)
         popupWindow.contentView.findViewById<FrameLayout>(R.id.renameButton).visibility = View.GONE
         popupWindow.contentView.findViewById<FrameLayout>(R.id.deleteButton).setOnClickListener {
-            titleTextEditor.setText("")
-            deleteNote(note)
             popupWindow.dismiss()
+            fakeBkg.visibility = View.VISIBLE
+            openConfirmPopup {
+                titleTextEditor.setText("")
+                deleteNote(note)
+            }
         }
         popupWindow.setOnDismissListener { isOptionMenuOpened = false }
+    }
+
+    private fun openConfirmPopup(mainCallback: (note: Note) -> Unit)
+    {
+        val inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.general_popup, null)
+        val popupWindow = PopupWindow(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        popupWindow.showAtLocation(popupWindow.contentView, Gravity.CENTER, 0, 0)
+        popupWindow.contentView.findViewById<TextView>(R.id.popupDescription).text = "آیا از حذف این یادداشت اطمینان دارید؟"
+        popupWindow.contentView.findViewById<TextView>(R.id.popupTitle).text = "حذف یادداشت"
+        popupWindow.contentView.findViewById<TextView>(R.id.cancelButton).setOnClickListener { popupWindow.dismiss() }
+        popupWindow.contentView.findViewById<EditText>(R.id.popupInput).visibility = View.GONE
+        val mainButton = popupWindow.contentView.findViewById<Button>(R.id.popupMainButton)
+        mainButton.text = "حذف"
+        mainButton.setOnClickListener {
+            popupWindow.dismiss()
+            mainCallback(note)
+        }
+        popupWindow.setOnDismissListener { fakeBkg.visibility = View.INVISIBLE }
     }
 
     private fun deleteNote(note: Note)
