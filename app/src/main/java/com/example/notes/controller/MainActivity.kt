@@ -1,14 +1,14 @@
-package com.example.notes
+package com.example.notes.controller
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.*
+import com.example.notes.R
 import com.example.notes.model.Card
 import com.example.notes.model.Folder
 import com.example.notes.model.Note
@@ -16,8 +16,6 @@ import com.example.notes.utils.NoteHolder
 import com.example.notes.utils.ObjectBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-import kotlinx.android.synthetic.main.activity_main.*
-import org.w3c.dom.Text
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -73,7 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadMainMenu()
     {
-        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor, ::openFolder)
+        val cardListAdapter = CardListAdapter(applicationContext,
+            R.layout.main_list_card, ::openTextEditor, ::openFolder)
         for (note in ObjectBox.store.boxFor(Note::class.java).all)
         {
             if (!note.folder.isNull) continue
@@ -116,7 +115,8 @@ class MainActivity : AppCompatActivity() {
         toolbarTitle.text = folder.title
         backButton.visibility = View.VISIBLE
         optionsButton.visibility = View.VISIBLE
-        val cardListAdapter = CardListAdapter(applicationContext, R.layout.main_list_card, ::openTextEditor, ::openFolder)
+        val cardListAdapter = CardListAdapter(applicationContext,
+            R.layout.main_list_card, ::openTextEditor, ::openFolder)
         for (note in folder.notes)
         {
             cardListAdapter.add(Card("" + (Calendar.getInstance().time.time - note.lastTimeModified) / 60000 + " دقیقه پیش", note.title, Card.CardType.NOTE, note.id))

@@ -1,4 +1,4 @@
-package com.example.notes
+package com.example.notes.controller
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.notes.R
 import com.example.notes.model.Note
 import com.example.notes.utils.NoteHolder
 import com.example.notes.utils.ObjectBox
