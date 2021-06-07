@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!isFolderOpened) loadMainMenu()
+        if (!isFolderOpened) loadMainMenu() else openFolder(openedFolder)
         closeOptionsCallback()
     }
 
@@ -58,7 +58,11 @@ class MainActivity : AppCompatActivity() {
         mainFloatingActionButton.setOnClickListener { openOptionsCallback() }
         newNoteFloatingActionButton.setOnClickListener {
             val note = Note(0, "", "", Calendar.getInstance().time.time)
-            if (isFolderOpened) note.folder.setAndPutTarget(openedFolder)
+            if (isFolderOpened)
+            {
+                note.folder.setAndPutTarget(openedFolder)
+                openedFolder = ObjectBox.store.boxFor(Folder::class.java).get(openedFolder.id)
+            }
             openTextEditor(note)
         }
         optionsButton.setOnTouchListener { _, p1 ->

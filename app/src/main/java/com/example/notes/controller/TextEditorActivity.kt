@@ -2,6 +2,7 @@ package com.example.notes.controller
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.notes.model.Note
 import com.example.notes.utils.NoteHolder
 import com.example.notes.utils.ObjectBox
 import java.util.*
+import kotlin.math.log
 
 class TextEditorActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
